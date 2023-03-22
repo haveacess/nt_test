@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('app_stats', function (Blueprint $table) {
-            $table->increments('id');
+            $table->primary(['id_country', 'id_category', 'id_app', 'date'], 'id');
 
             $table->unsignedInteger('id_country');
             $table->foreign('id_country')
                 ->references('id')->on('countries')
                 ->cascadeOnDelete();
+
+            $table->unsignedInteger('id_category')
+                ->comment('At this date for this category');
 
             $table->unsignedInteger('id_app');
             $table->foreign('id_app')
