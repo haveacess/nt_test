@@ -142,6 +142,7 @@ return [
         'driver' => 'file',
         // 'store'  => 'redis',
     ],
+    'api_requests_per_minute' => env('API_REQUESTS_PER_MINUTE', 60),
 
     /*
     |--------------------------------------------------------------------------

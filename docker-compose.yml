@@ -24,11 +24,12 @@ services:
       - APP_KEY=${LARAVEL_APP_KEY}
       - APP_DEBUG=${LARAVEL_APP_DEBUG}
       - LOG_CHANNEL=${LARAVEL_LOG_CHANNEL}
+      - API_REQUESTS_PER_MINUTE=${LARAVEL_API_REQUESTS_PER_MINUTE}
       - MARIADB_PORT
       - MARIADB_DATABASE
       - MARIADB_USER
       - MARIADB_PASSWORD
-    command: sh -c "composer install && php-fpm"
+    command: sh -c "composer install && php artisan migrate && php-fpm"
   maria_db:
     image: mariadb:10.3
     ports:
