@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Http\Responses\ApiResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use InvalidArgumentException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -44,5 +49,18 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e): JsonResponse|Response|\Symfony\Component\HttpFoundation\Response|ApiResponse
+    {
+        if ($e instanceof InvalidArgumentException) {
+            return new ApiResponse($e->getMessage(), 422);
+        }
+
+        if ($e instanceof ThrottleRequestsException) {
+            return new ApiResponse($e->getMessage(), 429);
+        }
+
+        return parent::render($request, $e);
     }
 }
